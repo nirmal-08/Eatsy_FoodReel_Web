@@ -1,0 +1,14 @@
+// /user/register => user register form
+// /user/login => user login form
+
+// food-partner/register => food-partner register form
+// food-partner/login => food-partner login form
+
+// using axios you need to send the credentials in the request
+// { withCredentials: true } // to send cookies from frontend to backend
+
+// backend should also allow credentials from frontend
+// app.use(cors({
+//     origin: 'http://localhost:5173', // frontend url
+//     credentials: true // to allow cookies to be sent
+// }));
