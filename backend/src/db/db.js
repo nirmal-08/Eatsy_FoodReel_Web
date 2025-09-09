@@ -1,7 +1,7 @@
 // const mongoose = require('mongoose');
 
     import mongoose from 'mongoose';
-  
+
     function connectDB() {
         
         mongoose.connect(process.env.MONGODB_URI)
