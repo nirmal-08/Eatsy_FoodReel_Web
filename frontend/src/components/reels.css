@@ -6,12 +6,15 @@
 .visit-btn.prominent {
   position: relative;
   z-index: 7;
+ 
 }
 
-@media (min-width: 1070px) and (min-height: 2400px) {
+@media (min-width: 1060px) and (min-height: 2408px) {
   .visit-btn.prominent {
-    top: -60px; /* Move upward more for this screen size */
+     /* Move upward more for this screen size */
+     position: relative;
     z-index: 10;
+     top: -60px;
   }
 }
 
@@ -134,9 +137,9 @@
 .visit-btn.prominent {
   width: 100%;
   justify-content: center;
-  margin-top: 0.5rem;
-  margin-bottom: 0.6rem;
-  padding: 0.9rem 1.5rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+  padding: 0.8rem 1.2rem;
   font-size: 1.08rem;
   border-radius: 12px;
   /* box-shadow: 0 4px 12px -2px rgba(0,0,0,0.3), 0 0 0 2px rgba(251,191,36,0.25); */
@@ -309,7 +312,7 @@
   }
   
   .visit-btn.prominent {
-    padding: 0.7rem 1.2rem;
+    padding: 0.6rem 1.2rem;
     font-size: 0.95rem;
   }
   
