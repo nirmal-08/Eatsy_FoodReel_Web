@@ -181,7 +181,7 @@
 .reel-actions {
   position: absolute;
   right: 14px;
-  bottom: 260px; /* Moved further up to avoid bottom nav overlap */
+  bottom: 320px; /* Moved further up to avoid bottom nav overlap */
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -286,10 +286,6 @@
   transform: translateY(-2px);
 }
 
-
-
-
-
 /* Responsive adjustments */
 @media (max-width: 480px) {
   .reel-overlay {
@@ -301,10 +297,7 @@
     font-size: 0.95rem;
   }
   
-  .reel-actions {
-    bottom: 180px; /* Adjusted for mobile */
-    gap: 1rem;
-  }
+ 
   
   .action-btn {
     width: 48px;
@@ -334,7 +327,7 @@
   
   .reel-actions {
     right: 24px;
-    bottom: 220px; /* Adjusted for tablet */
+    bottom: 300px; /* Adjusted for tablet */
   }
 }
 
