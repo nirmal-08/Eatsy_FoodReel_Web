@@ -5,8 +5,15 @@
 
 .visit-btn.prominent {
   position: relative;
-  z-index: 10;
+  z-index: 7;
 }
+
+@media (max-width: 1080px) and (max-height: 2408px) {
+  .visit-btn.prominent {
+    top: -60px; /* Move upward more for this screen size */
+  }
+}
+
 .reels-feed {
   height: 100vh;
   width: 100%;
@@ -345,7 +352,7 @@
   
   .visit-btn.prominent {
     max-width: 300px;
-    padding: 0.9rem 1.8rem;
+    padding: 1.2rem 1.8rem;
     font-size: 1.05rem;
   }
 }
