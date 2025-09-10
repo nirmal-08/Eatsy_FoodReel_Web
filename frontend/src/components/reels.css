@@ -119,8 +119,9 @@
   width: 100%;
   justify-content: center;
   margin-top: 0.5rem;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
+  margin-bottom: 0.7rem;
+  padding: 0.9rem 1.5rem;
+  font-size: 1.08rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px -2px rgba(0,0,0,0.3), 0 0 0 2px rgba(251,191,36,0.25);
 }
@@ -180,7 +181,7 @@
 .reel-actions {
   position: absolute;
   right: 14px;
-  bottom: 200px; /* Moved up from 160px */
+  bottom: 260px; /* Moved further up to avoid bottom nav overlap */
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
