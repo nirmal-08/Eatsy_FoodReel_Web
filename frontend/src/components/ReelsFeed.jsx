@@ -16,7 +16,7 @@ const ExpandableDescription = ({ text, maxLines = 2 }) => {
     }, [text]);
 
     async function likeVideo(item) {
-        const response = await axios.post('http://localhost:8000/api/food/like', {
+        const response = await axios.post('https://eatsy-foodreel-web.onrender.com/api/food/like', {
             foodId: item._id
         }, { withCredentials: true });
         console.log('Liked video', response.data);
@@ -80,7 +80,7 @@ const ReelsFeed = () => {
         (async () => {
             try {
                 setLoading(true);
-                const res = await axios.get('http://localhost:8000/api/food', {
+                const res = await axios.get('https://eatsy-foodreel-web.onrender.com/api/food', {
                     withCredentials: true
                 });
                 const items = res.data?.foodItems || [];
@@ -158,7 +158,7 @@ const ReelsFeed = () => {
 
     const toggleLike = async (id) => {
         try {
-            const res = await axios.post('http://localhost:8000/api/food/like', {
+            const res = await axios.post('https://eatsy-foodreel-web.onrender.com/api/food/like', {
                 foodId: id
             }, { withCredentials: true });
             // API should return { like: true/false, likeCount: number }

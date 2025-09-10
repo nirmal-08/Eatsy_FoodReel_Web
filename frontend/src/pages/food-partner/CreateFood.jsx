@@ -44,7 +44,7 @@ const CreateFood = () => {
     formData.append('name', name.trim());
     formData.append('description', description.trim());
 
-    const response = await axios.post('http://localhost:8000/api/food',formData, {
+    const response = await axios.post('https://eatsy-foodreel-web.onrender.com/api/food',formData, {
       withCredentials: true,
     })
     // console.log('Submitted successfully', response.data);

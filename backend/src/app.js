@@ -10,7 +10,7 @@ const app = express();
 const __dirname = path.resolve();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://eatsy-foodreel-web.onrender.com/',
     credentials: true
 }));
 

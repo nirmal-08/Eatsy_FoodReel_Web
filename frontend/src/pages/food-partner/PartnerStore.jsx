@@ -16,7 +16,7 @@ const PartnerStore = () => {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    axios.get(`http://localhost:8000/api/food-partner/${partnerId}` , {
+    axios.get(`https://eatsy-foodreel-web.onrender.com/api/food-partner/${partnerId}` , {
         withCredentials: true
     })
     .then(response => {

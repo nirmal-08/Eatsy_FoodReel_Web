@@ -13,7 +13,7 @@ const UserLogin = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    const response = await axios.post('http://localhost:8000/api/auth/user/login', {
+    const response = await axios.post('https://eatsy-foodreel-web.onrender.com/api/auth/user/login', {
       email,
       password
     }, {

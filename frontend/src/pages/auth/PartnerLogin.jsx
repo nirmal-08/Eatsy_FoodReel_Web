@@ -12,7 +12,7 @@ const PartnerLogin = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    const response = await axios.post('http://localhost:8000/api/auth/food-partner/login',
+    const response = await axios.post('https://eatsy-foodreel-web.onrender.com/api/auth/food-partner/login',
       {
         email,
         password

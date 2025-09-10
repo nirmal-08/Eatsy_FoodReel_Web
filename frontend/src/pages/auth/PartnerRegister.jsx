@@ -17,7 +17,7 @@ const PartnerRegister = () => {
     const address = form.address.value;
     const password = form.password.value;
 
-    const response = await axios.post('http://localhost:8000/api/auth/food-partner/register', {
+    const response = await axios.post('https://eatsy-foodreel-web.onrender.com/api/auth/food-partner/register', {
       name: ownerName,
       contactName: businessName,
       email: email,
