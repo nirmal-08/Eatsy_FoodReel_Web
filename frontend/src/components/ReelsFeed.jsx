@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './reels.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Heart, Bookmark, MessageCircle, Volume2, VolumeX, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
+import { Heart, Bookmark, MessageCircle, Volume2, VolumeX, MapPin } from 'lucide-react';
 
 // ==========================
 // Expandable description
@@ -99,6 +99,27 @@ const ReelsFeed = () => {
   const [userSaved, setUserSaved] = useState({});
   const [commentCounts, setCommentCounts] = useState({});
   const [isScrolling, setIsScrolling] = useState(false);
+  const [bottomNavHeight, setBottomNavHeight] = useState(70); // Default height
+
+  // Get bottom nav height for proper spacing
+  useEffect(() => {
+    const updateBottomNavHeight = () => {
+      const bottomNav = document.querySelector('.bottom-nav-glass');
+      if (bottomNav) {
+        setBottomNavHeight(bottomNav.offsetHeight);
+      }
+    };
+
+    // Initial measurement
+    updateBottomNavHeight();
+    
+    // Listen for resize events
+    window.addEventListener('resize', updateBottomNavHeight);
+    
+    return () => {
+      window.removeEventListener('resize', updateBottomNavHeight);
+    };
+  }, []);
 
   // Fetch food reels
   useEffect(() => {
@@ -310,7 +331,7 @@ const ReelsFeed = () => {
               muted={isMuted}
             />
 
-            {/* Right action bar - only show when not scrolling */}
+            {/* Right action bar - positioned higher */}
             <div className={`reel-actions ${isScrolling ? 'scrolling' : ''}`} aria-label="Reel actions">
               <ActionButton
                 icon={Heart}
@@ -346,8 +367,8 @@ const ReelsFeed = () => {
               </div>
             )}
 
-            {/* Overlay with description + CTA */}
-            <div className="reel-overlay">
+            {/* Overlay with description + CTA - adjusted for bottom nav */}
+            <div className="reel-overlay" style={{ paddingBottom: `calc(1.55rem + ${bottomNavHeight}px)` }}>
               <div className="overlay-inner">
                 {/* Profile info if available */}
                 {item.foodPartner && (
