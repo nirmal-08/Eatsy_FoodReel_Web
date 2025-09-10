@@ -11,6 +11,7 @@
 @media (min-width: 1070px) and (min-height: 2400px) {
   .visit-btn.prominent {
     top: -60px; /* Move upward more for this screen size */
+    z-index: 10;
   }
 }
 
@@ -66,8 +67,8 @@
   pointer-events: auto; 
   display: flex; 
   flex-direction: column; 
-  gap: 0.8rem; 
-  padding: 10px;
+  gap: 0.6rem; 
+  padding: 4px;
 }
 
 /* Profile info styling */
@@ -134,11 +135,11 @@
   width: 100%;
   justify-content: center;
   margin-top: 0.5rem;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.6rem;
   padding: 0.9rem 1.5rem;
   font-size: 1.08rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px -2px rgba(0,0,0,0.3), 0 0 0 2px rgba(251,191,36,0.25);
+  /* box-shadow: 0 4px 12px -2px rgba(0,0,0,0.3), 0 0 0 2px rgba(251,191,36,0.25); */
 }
 
 .visit-btn.prominent:hover {
