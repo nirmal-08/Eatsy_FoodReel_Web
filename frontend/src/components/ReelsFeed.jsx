@@ -55,20 +55,22 @@ const ExpandableDescription = ({ text, maxLines = 2 }) => {
 // Reusable action button
 // ==========================
 const ActionButton = ({ icon: Icon, count, active, onClick, label, activeColor }) => (
-  <button
-    className={`action-btn ${active ? 'active' : ''}`}
-    onClick={onClick}
-    aria-pressed={active}
-    aria-label={label}
-  >
-    <Icon
-      className="icon"
-      strokeWidth={2}
-      color={active ? activeColor : 'white'}
-      fill={active ? activeColor : 'none'}
-    />
+  <div className="action-btn-container">
+    <button
+      className={`action-btn ${active ? 'active' : ''}`}
+      onClick={onClick}
+      aria-pressed={active}
+      aria-label={label}
+    >
+      <Icon
+        className="icon"
+        strokeWidth={2}
+        color={active ? activeColor : 'white'}
+        fill={active ? activeColor : 'none'}
+      />
+    </button>
     <span className="count">{count > 0 ? formatCount(count) : count}</span>
-  </button>
+  </div>
 );
 
 // Format large numbers (e.g., 1.2K, 5.6M)
@@ -99,27 +101,6 @@ const ReelsFeed = () => {
   const [userSaved, setUserSaved] = useState({});
   const [commentCounts, setCommentCounts] = useState({});
   const [isScrolling, setIsScrolling] = useState(false);
-  const [bottomNavHeight, setBottomNavHeight] = useState(70); // Default height
-
-  // Get bottom nav height for proper spacing
-  useEffect(() => {
-    const updateBottomNavHeight = () => {
-      const bottomNav = document.querySelector('.bottom-nav-glass');
-      if (bottomNav) {
-        setBottomNavHeight(bottomNav.offsetHeight);
-      }
-    };
-
-    // Initial measurement
-    updateBottomNavHeight();
-    
-    // Listen for resize events
-    window.addEventListener('resize', updateBottomNavHeight);
-    
-    return () => {
-      window.removeEventListener('resize', updateBottomNavHeight);
-    };
-  }, []);
 
   // Fetch food reels
   useEffect(() => {
@@ -367,8 +348,8 @@ const ReelsFeed = () => {
               </div>
             )}
 
-            {/* Overlay with description + CTA - adjusted for bottom nav */}
-            <div className="reel-overlay" style={{ paddingBottom: `calc(1.55rem + ${bottomNavHeight}px)` }}>
+            {/* Overlay with description + CTA - positioned higher */}
+            <div className="reel-overlay">
               <div className="overlay-inner">
                 {/* Profile info if available */}
                 {item.foodPartner && (
