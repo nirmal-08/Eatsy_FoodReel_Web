@@ -1,0 +1,191 @@
+/* Bottom Navigation with Glass Morphism Effect */
+.bottom-nav-glass {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 0.5rem 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.15);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem 0.8rem;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.nav-item:hover {
+  color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+}
+
+.nav-item.active {
+  color: #ffffff;
+}
+
+.nav-icon {
+  margin-bottom: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.nav-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+}
+
+/* Active state indicator */
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  width: 5px;
+  height: 5px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* Center add button */
+.nav-center-item {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.nav-add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: #1c1605;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+  transition: all 0.3s ease;
+  margin-top: -24px;
+}
+
+.nav-add-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(251, 191, 36, 0.4);
+}
+
+.nav-add-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Subtle background highlight for active item */
+.nav-item::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.nav-item.active::before {
+  width: 50px;
+  height: 50px;
+}
+
+.nav-item:hover::before {
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Responsive adjustments */
+@media (max-width: 360px) {
+  .bottom-nav-glass {
+    padding: 0.4rem 0.6rem 0.8rem;
+  }
+  
+  .nav-item {
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .nav-label {
+    font-size: 0.65rem;
+  }
+  
+  .nav-add-button {
+    width: 46px;
+    height: 46px;
+    margin-top: -20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .bottom-nav-glass {
+    padding: 0.6rem 1rem 1.2rem;
+  }
+  
+  .nav-item {
+    padding: 0.6rem 1rem;
+  }
+  
+  .nav-label {
+    font-size: 0.75rem;
+  }
+}
+
+/* Animation for nav items */
+@keyframes navItemPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.nav-item.active .nav-icon {
+  animation: navItemPulse 0.5s ease;
+}
+
+/* Ensure content doesn't hide behind nav */
+.app-content {
+  padding-bottom: 80px;
+}
+
+@media (max-width: 360px) {
+  .app-content {
+    padding-bottom: 70px;
+  }
+}
+
+@media (min-width: 768px) {
+  .app-content {
+    padding-bottom: 90px;
+  }
+}

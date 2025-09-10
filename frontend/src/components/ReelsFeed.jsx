@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './reels.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Heart, Bookmark, MessageCircle, Volume2, VolumeX } from 'lucide-react';
+import { Heart, Bookmark, MessageCircle, Volume2, VolumeX, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
 
 // ==========================
 // Expandable description
@@ -22,6 +22,7 @@ const ExpandableDescription = ({ text, maxLines = 2 }) => {
     <div style={{ position: 'relative' }}>
       <div
         ref={descRef}
+        className="reel-desc-text"
         style={{
           display: '-webkit-box',
           WebkitLineClamp: expanded ? 'unset' : maxLines,
@@ -35,12 +36,16 @@ const ExpandableDescription = ({ text, maxLines = 2 }) => {
         {text}
       </div>
       {showToggle && (
-        <span
-          style={{ color: '#3897f0', cursor: 'pointer', fontWeight: 500 }}
-          onClick={() => setExpanded((prev) => !prev)}
+        <button
+          className="expand-toggle-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            setExpanded((prev) => !prev);
+          }}
+          aria-label={expanded ? 'Show less' : 'Show more'}
         >
-          {expanded ? ' Show less' : '... more'}
-        </span>
+          {expanded ? 'Show less' : '... more'}
+        </button>
       )}
     </div>
   );
@@ -62,9 +67,19 @@ const ActionButton = ({ icon: Icon, count, active, onClick, label, activeColor }
       color={active ? activeColor : 'white'}
       fill={active ? activeColor : 'none'}
     />
-    <span className="count">{count ?? 0}</span>
+    <span className="count">{count > 0 ? formatCount(count) : count}</span>
   </button>
 );
+
+// Format large numbers (e.g., 1.2K, 5.6M)
+const formatCount = (count) => {
+  if (count >= 1000000) {
+    return (count / 1000000).toFixed(1) + 'M';
+  } else if (count >= 1000) {
+    return (count / 1000).toFixed(1) + 'K';
+  }
+  return count;
+};
 
 // ==========================
 // Main ReelsFeed
@@ -83,6 +98,7 @@ const ReelsFeed = () => {
   const [userLiked, setUserLiked] = useState({});
   const [userSaved, setUserSaved] = useState({});
   const [commentCounts, setCommentCounts] = useState({});
+  const [isScrolling, setIsScrolling] = useState(false);
 
   // Fetch food reels
   useEffect(() => {
@@ -100,13 +116,20 @@ const ReelsFeed = () => {
 
         const lc = {};
         const cc = {};
+        const ul = {};
+        const us = {};
+        
         items.forEach((it) => {
           lc[it._id] = it.likeCount || it.likes || 0;
           cc[it._id] = it.commentCount || 0;
+          ul[it._id] = it.userLiked || false;
+          us[it._id] = it.userSaved || false;
         });
 
         setLikeCounts(lc);
         setCommentCounts(cc);
+        setUserLiked(ul);
+        setUserSaved(us);
 
         if (items.length > 0) setActiveId(items[0]._id);
       } catch (e) {
@@ -158,6 +181,25 @@ const ReelsFeed = () => {
     });
   }, [activeId, isMuted]);
 
+  // Handle scroll events to detect scrolling state
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let scrollTimeout;
+    const handleScroll = () => {
+      setIsScrolling(true);
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => setIsScrolling(false), 300);
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, []);
+
   // Handlers
   const handleVisit = (item) => {
     const partnerId =
@@ -192,20 +234,46 @@ const ReelsFeed = () => {
     }
   };
 
-  const toggleSave = (id) => {
-    setUserSaved((prev) => ({ ...prev, [id]: !prev[id] }));
-    // TODO: backend API call for save
+  const toggleSave = async (id) => {
+    try {
+      const res = await axios.post(
+        'https://eatsy-foodreel-web.onrender.com/api/food/save',
+        { foodId: id },
+        { withCredentials: true }
+      );
+      const { saved } = res.data;
+      setUserSaved((prev) => ({ ...prev, [id]: saved }));
+    } catch (e) {
+      console.error('Failed to save:', e);
+    }
   };
 
   // States
   if (loading) {
-    return <div className="reels-feed loading">⏳ Loading videos...</div>;
+    return (
+      <div className="reels-feed loading">
+        <div className="loading-spinner"></div>
+        <p>Loading delicious food videos...</p>
+      </div>
+    );
   }
   if (error) {
-    return <div className="reels-feed error">⚠️ {error}</div>;
+    return (
+      <div className="reels-feed error">
+        <p>⚠️ {error}</p>
+        <button onClick={() => window.location.reload()} className="retry-btn">
+          Try Again
+        </button>
+      </div>
+    );
   }
   if (!reels.length) {
-    return <div className="reels-feed empty">📭 No videos available.</div>;
+    return (
+      <div className="reels-feed empty">
+        <p>📭 No videos available.</p>
+        <p>Check back later for new food content!</p>
+      </div>
+    );
   }
 
   // UI
@@ -224,10 +292,11 @@ const ReelsFeed = () => {
         const id = item._id;
         const liked = !!userLiked[id];
         const saved = !!userSaved[id];
+        const isActive = activeId === id;
 
         return (
           <div
-            className={`reel ${activeId === id ? 'active' : ''}`}
+            className={`reel ${isActive ? 'active' : ''}`}
             key={id}
             data-reel-id={id}
           >
@@ -241,8 +310,8 @@ const ReelsFeed = () => {
               muted={isMuted}
             />
 
-            {/* Right action bar */}
-            <div className="reel-actions" aria-label="Reel actions">
+            {/* Right action bar - only show when not scrolling */}
+            <div className={`reel-actions ${isScrolling ? 'scrolling' : ''}`} aria-label="Reel actions">
               <ActionButton
                 icon={Heart}
                 count={likeCounts[id]}
@@ -269,14 +338,46 @@ const ReelsFeed = () => {
               />
             </div>
 
+            {/* Location indicator at top */}
+            {item.location && (
+              <div className="location-indicator">
+                <MapPin size={14} />
+                <span>{item.location}</span>
+              </div>
+            )}
+
             {/* Overlay with description + CTA */}
             <div className="reel-overlay">
               <div className="overlay-inner">
-                <ExpandableDescription text={item.description} maxLines={2} />
+                {/* Profile info if available */}
+                {item.foodPartner && (
+                  <div className="profile-info">
+                    <div className="profile-avatar">
+                      {item.foodPartner.name ? item.foodPartner.name.charAt(0).toUpperCase() : 'F'}
+                    </div>
+                    <div className="profile-details">
+                      <div className="profile-name">
+                        {typeof item.foodPartner === 'string' ? 'Food Partner' : item.foodPartner.name}
+                      </div>
+                      {item.foodPartner.rating && (
+                        <div className="profile-rating">
+                          ⭐ {item.foodPartner.rating}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                <div className="description-container">
+                  <ExpandableDescription text={item.description} maxLines={2} />
+                </div>
+                
+                {/* Prominent Visit Store button */}
                 <button
-                  className="visit-btn"
+                  className="visit-btn prominent"
                   onClick={() => handleVisit(item)}
                 >
+                  <MapPin size={16} />
                   Visit Store
                 </button>
               </div>
