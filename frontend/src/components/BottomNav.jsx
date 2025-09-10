@@ -1,16 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './reels.css'; // reuse styles for nav to avoid new file
+import { Home, Bookmark } from 'lucide-react'; // modern icons
+import './reels.css';
 
 const BottomNav = () => {
   return (
     <nav className="bottom-nav" aria-label="Primary">
       <NavLink end to="/" className={({ isActive }) => 'nav-item' + (isActive ? ' active' : '')}>
-        <span className="nav-icon" aria-hidden>🏠</span>
+        <Home className="nav-icon" aria-hidden="true" strokeWidth={2} />
         <span className="nav-label">home</span>
       </NavLink>
       <NavLink to="/saved" className={({ isActive }) => 'nav-item' + (isActive ? ' active' : '')}>
-        <span className="nav-icon" aria-hidden>🔖</span>
+        <Bookmark className="nav-icon" aria-hidden="true" strokeWidth={2} />
         <span className="nav-label">saved</span>
       </NavLink>
     </nav>

@@ -4,7 +4,7 @@
 
     function connectDB() {
         
-        mongoose.connect(process.env.MONGODB_URI)
+        mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://nirmal:vala%402525@cluster0.cjc1opj.mongodb.net/food-view")
         .then(() => {
             console.log('DB connected');
         })
